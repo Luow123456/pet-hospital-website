@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Form, Button, Input, message, Spin } from 'antd';
+import { Form, Button, Input, message, Spin } from 'antd';
 import { userApi } from '../services/api';
 import '../styles/pages.css';
 
@@ -27,7 +27,12 @@ function Login({ setUser, setIsLoggedIn }) {
 
   return (
     <div className="page-container">
-      <Card style={{ maxWidth: 400, margin: '50px auto' }} title="用户登录">
+      <div className="page-card auth-card">
+        <div className="auth-title">
+          <h2>欢迎回来</h2>
+          <p>请输入账号信息，继续管理宠物健康服务。</p>
+        </div>
+
         <Spin spinning={loading}>
           <Form form={form} onFinish={onFinish} layout="vertical">
             <Form.Item label="邮箱" name="email" rules={[{ required: true, type: 'email', message: '请输入有效的邮箱' }]}>
@@ -41,12 +46,13 @@ function Login({ setUser, setIsLoggedIn }) {
                 登录
               </Button>
             </Form.Item>
-            <p style={{ textAlign: 'center' }}>
-              没有账号？<a href="/register">立即注册</a>
-            </p>
           </Form>
         </Spin>
-      </Card>
+
+        <div className="auth-footer">
+          没有账号？<a href="/register">立即注册</a>
+        </div>
+      </div>
     </div>
   );
 }

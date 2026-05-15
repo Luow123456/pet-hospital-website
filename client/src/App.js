@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Layout, Menu, Button, Dropdown } from 'antd';
 import {
   HomeOutlined,
@@ -7,7 +7,6 @@ import {
   CalendarOutlined,
   ShoppingOutlined,
   MessageOutlined,
-  LogoutOutlined,
   LoginOutlined,
 } from '@ant-design/icons';
 import Home from './pages/Home';
@@ -25,6 +24,8 @@ const { Header, Content, Footer } = Layout;
 function App() {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     // Check if user is logged in
@@ -34,6 +35,18 @@ function App() {
       setIsLoggedIn(true);
       setUser(JSON.parse(userData));
     }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 24);
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, Math.round((window.scrollY / docHeight) * 100)) : 0;
+      setScrollProgress(progress);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleLogout = () => {
@@ -89,14 +102,17 @@ function App() {
     },
   ];
 
+  const currentPath = window.location.pathname;
+
   const handleMenuClick = (key) => {
-    window.location.pathname = `/${key}`;
+    const path = key === 'home' ? '/' : `/${key}`;
+    window.location.pathname = path;
   };
 
   return (
     <Router>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header className="app-header">
+        <Header className={`app-header ${scrolled ? 'scrolled' : ''}`}>
           <div className="logo">🐾 宠物医院</div>
           <Menu
             theme="dark"
@@ -125,7 +141,7 @@ function App() {
           </div>
         </Header>
         <Content className="app-content">
-          <Routes>
+          <AnimatedRoutes>
             <Route path="/" element={<Home />} />
             <Route path="/doctors" element={<Doctors />} />
             <Route path="/appointment" element={<Appointment />} />
@@ -134,8 +150,31 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/login" element={<Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
-          </Routes>
+          </AnimatedRoutes>
         </Content>
+
+        <div className="page-progress-bar">
+          <div className="page-progress-fill" style={{ width: `${scrollProgress}%` }} />
+        </div>
+
+        <div className="mobile-bottom-nav">
+          {menuItems.map((item) => {
+            const path = `/${item.key}`;
+            const isActive = currentPath === path || (currentPath === '/' && item.key === 'home');
+            return (
+              <button
+                key={item.key}
+                className={`mobile-nav-item ${isActive ? 'active' : ''}`}
+                type="button"
+                onClick={() => handleMenuClick(item.key)}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
         <Footer className="app-footer">
           <div className="footer-content">
             <div className="footer-section">
@@ -159,6 +198,30 @@ function App() {
         </Footer>
       </Layout>
     </Router>
+  );
+}
+
+function AnimatedRoutes({ children }) {
+  const location = useLocation();
+  const [displayLocation, setDisplayLocation] = useState(location);
+  const [transitionStage, setTransitionStage] = useState('fadeIn');
+
+  useEffect(() => {
+    if (location.pathname !== displayLocation.pathname) {
+      setTransitionStage('fadeOut');
+      const timeout = setTimeout(() => {
+        setDisplayLocation(location);
+        setTransitionStage('fadeIn');
+      }, 180);
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
+  }, [location, displayLocation]);
+
+  return (
+    <div className={`page-transition ${transitionStage}`}>
+      <Routes location={displayLocation}>{children}</Routes>
+    </div>
   );
 }
 

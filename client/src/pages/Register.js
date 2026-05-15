@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Form, Button, Input, message, Spin } from 'antd';
+import { Form, Button, Input, message, Spin } from 'antd';
 import { userApi } from '../services/api';
 import '../styles/pages.css';
 
@@ -22,7 +22,12 @@ function Register() {
 
   return (
     <div className="page-container">
-      <Card style={{ maxWidth: 400, margin: '50px auto' }} title="用户注册">
+      <div className="page-card auth-card">
+        <div className="auth-title">
+          <h2>创建新账号</h2>
+          <p>立即注册，享受更便捷的宠物医疗服务。</p>
+        </div>
+
         <Spin spinning={loading}>
           <Form form={form} onFinish={onFinish} layout="vertical">
             <Form.Item label="昵称" name="name" rules={[{ required: true, message: '请输入昵称' }]}>
@@ -59,12 +64,13 @@ function Register() {
                 注册
               </Button>
             </Form.Item>
-            <p style={{ textAlign: 'center' }}>
-              已有账号？<a href="/login">立即登录</a>
-            </p>
           </Form>
         </Spin>
-      </Card>
+
+        <div className="auth-footer">
+          已有账号？<a href="/login">立即登录</a>
+        </div>
+      </div>
     </div>
   );
 }

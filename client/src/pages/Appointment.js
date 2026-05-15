@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Input, Select, DatePicker, TimePicker, Card, message, Spin } from 'antd';
+import { Form, Button, Input, Select, DatePicker, TimePicker, message, Spin } from 'antd';
 import { appointmentApi, doctorApi, petRecordApi } from '../services/api';
 import '../styles/pages.css';
-import dayjs from 'dayjs';
 
 function Appointment() {
   const [form] = Form.useForm();
@@ -62,21 +61,26 @@ function Appointment() {
   if (!isLoggedIn) {
     return (
       <div className="page-container">
-        <Card style={{ textAlign: 'center', marginTop: 50 }}>
+        <div className="page-card auth-card" style={{ textAlign: 'center' }}>
           <h2>请先登录</h2>
           <p>预约服务需要登录。</p>
           <Button type="primary" onClick={() => (window.location.pathname = '/login')}>
             去登录
           </Button>
-        </Card>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="page-container">
-      <h1>在线挂号</h1>
-      <Card style={{ maxWidth: 600, margin: '30px auto' }}>
+      <div className="section-heading">
+        <span className="section-tag">预约挂号</span>
+        <h2>快速安排宠物就诊</h2>
+        <p>选择宠物、医生以及时间，轻松完成在线预约。</p>
+      </div>
+
+      <div className="page-card form-card" style={{ maxWidth: 760, margin: '0 auto' }}>
         <Spin spinning={loading}>
           <Form form={form} onFinish={onFinish} layout="vertical">
             <Form.Item
@@ -128,7 +132,7 @@ function Appointment() {
               name="symptoms"
               rules={[{ required: true, message: '请描述宠物的症状' }]}
             >
-              <Input.TextArea rows={4} placeholder="请详细描述宠物的症状" />
+              <Input.TextArea rows={5} placeholder="请详细描述宠物的症状" />
             </Form.Item>
 
             <Form.Item>
@@ -138,7 +142,7 @@ function Appointment() {
             </Form.Item>
           </Form>
         </Spin>
-      </Card>
+      </div>
     </div>
   );
 }

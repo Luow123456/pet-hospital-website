@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Form, Input, Select, Spin, message, Modal, Table, Space } from 'antd';
+import { Card, Button, Form, Input, Select, Spin, message, Modal, Table } from 'antd';
 import { petRecordApi } from '../services/api';
 import '../styles/pages.css';
 
@@ -101,44 +101,54 @@ function PetRecords() {
 
   return (
     <div className="page-container">
-      <h1>宠物病历管理</h1>
+      <div className="section-heading">
+        <span className="section-tag">病历管理</span>
+        <h2>宠物健康档案一目了然</h2>
+        <p>添加宠物信息并查看详细就诊记录，方便随时管理和查询。</p>
+      </div>
 
       <Spin spinning={loading}>
-        <Space style={{ marginBottom: 20, width: '100%' }} direction="vertical">
-          <Button type="primary" onClick={() => setIsModalVisible(true)}>
-            添加宠物
-          </Button>
+        <div className="page-card records-card" style={{ padding: 32 }}>
+          <div className="records-topbar">
+            <Button type="primary" onClick={() => setIsModalVisible(true)}>
+              添加宠物
+            </Button>
+            <div>当前宠物数量: <strong>{pets.length}</strong></div>
+          </div>
 
-          <Card title="我的宠物">
-            <Select
-              placeholder="请选择宠物"
-              onChange={handleSelectPet}
-              style={{ marginBottom: 20, width: '100%' }}
-            >
-              {pets.map((pet) => (
-                <Select.Option key={pet._id} value={pet._id}>
-                  {pet.name} - {pet.type} ({pet.breed})
-                </Select.Option>
-              ))}
-            </Select>
-
-            {selectedPet && (
-              <Card style={{ marginBottom: 20 }}>
-                <h3>{selectedPet.name}</h3>
-                <p>类型: {selectedPet.type}</p>
-                <p>品种: {selectedPet.breed}</p>
-                <p>年龄: {selectedPet.age}岁</p>
-                <p>体重: {selectedPet.weight}kg</p>
-              </Card>
-            )}
+          <Card bordered={false} className="page-card" style={{ marginBottom: 24 }}>
+            <Form layout="vertical">
+              <Form.Item label="选择宠物" style={{ marginBottom: 0 }}>
+                <Select placeholder="请选择宠物" onChange={handleSelectPet}>
+                  {pets.map((pet) => (
+                    <Select.Option key={pet._id} value={pet._id}>
+                      {pet.name} - {pet.type} ({pet.breed})
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Form>
           </Card>
 
           {selectedPet && (
-            <Card title="就诊记录">
-              <Table columns={columns} dataSource={records} rowKey="_id" />
+            <Card bordered={false} className="page-card pet-summary">
+              <h3>{selectedPet.name}</h3>
+              <p>类型: {selectedPet.type}</p>
+              <p>品种: {selectedPet.breed}</p>
+              <p>年龄: {selectedPet.age}岁</p>
+              <p>体重: {selectedPet.weight}kg</p>
             </Card>
           )}
-        </Space>
+
+          {selectedPet && (
+            <Card bordered={false} className="page-card">
+              <h3>就诊记录</h3>
+              <div className="table-wrapper">
+                <Table columns={columns} dataSource={records} rowKey="_id" pagination={false} />
+              </div>
+            </Card>
+          )}
+        </div>
       </Spin>
 
       <Modal title="添加宠物" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>

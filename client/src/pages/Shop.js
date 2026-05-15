@@ -52,49 +52,61 @@ function Shop() {
 
   return (
     <div className="page-container">
-      <h1>药品商城</h1>
-      <p className="page-subtitle">优质宠物用品和药品在线购买</p>
+      <div className="section-heading">
+        <span className="section-tag">商城精选</span>
+        <h2>精选宠物药品与护理用品</h2>
+        <p>优质商品、安全配送，守护宠物健康从日常护理开始。</p>
+      </div>
 
-      <Spin spinning={loading}>
-        <Row gutter={[24, 24]}>
-          {products.map((product) => (
-            <Col key={product._id} xs={24} sm={12} md={8}>
-              <Card className="product-card" hoverable>
-                <div className="product-image">
-                  <img src={product.image || 'https://via.placeholder.com/200'} alt={product.name} />
-                </div>
-                <h3>{product.name}</h3>
-                <p className="product-description">{product.description}</p>
-                <div className="product-info">
-                  <p>规格: {product.specifications}</p>
-                  <p>库存: {product.stock}件</p>
-                </div>
-                <div className="product-price">
-                  <span className="price">¥{product.price}</span>
-                </div>
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <InputNumber
-                    min={1}
-                    max={product.stock}
-                    defaultValue={1}
-                    onChange={(value) => handleQuantityChange(product._id, value)}
-                    style={{ width: '100%' }}
-                  />
-                  <Button
-                    type="primary"
-                    block
-                    icon={<ShoppingCartOutlined />}
-                    onClick={() => handleAddToCart(product)}
-                    disabled={product.stock === 0}
-                  >
-                    {product.stock === 0 ? '暂无库存' : '购买'}
-                  </Button>
-                </Space>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Spin>
+      <div className="shop-panel page-card">
+        <div className="shop-toolbar">
+          <div className="shop-summary">为宠物精选安全可靠的药品与营养用品</div>
+          <Button type="default" onClick={fetchProducts} loading={loading}>
+            刷新商品
+          </Button>
+        </div>
+
+        <Spin spinning={loading}>
+          <Row gutter={[24, 24]}>
+            {products.map((product) => (
+              <Col key={product._id} xs={24} sm={12} md={8}>
+                <Card className="product-card" hoverable>
+                  <div className="product-image">
+                    <img src={product.image || 'https://via.placeholder.com/240'} alt={product.name} />
+                  </div>
+                  <h3>{product.name}</h3>
+                  <p className="product-description">{product.description}</p>
+                  <div className="product-info">
+                    <p>规格: {product.specifications}</p>
+                    <p>库存: {product.stock}件</p>
+                  </div>
+                  <div className="product-price">
+                    <span className="price">¥{product.price}</span>
+                  </div>
+                  <Space direction="vertical" style={{ width: '100%' }}>
+                    <InputNumber
+                      min={1}
+                      max={product.stock}
+                      defaultValue={1}
+                      onChange={(value) => handleQuantityChange(product._id, value)}
+                      style={{ width: '100%' }}
+                    />
+                    <Button
+                      type="primary"
+                      block
+                      icon={<ShoppingCartOutlined className="animated-icon" />}
+                      onClick={() => handleAddToCart(product)}
+                      disabled={product.stock === 0}
+                    >
+                      {product.stock === 0 ? '暂无库存' : '加入购物车'}
+                    </Button>
+                  </Space>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Spin>
+      </div>
     </div>
   );
 }

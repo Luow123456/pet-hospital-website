@@ -27,39 +27,44 @@ function Doctors() {
 
   return (
     <div className="page-container">
-      <h1>医生团队</h1>
-      <p className="page-subtitle">我们拥有经验丰富的专业医疗团队</p>
+      <div className="section-heading">
+        <span className="section-tag">医生团队</span>
+        <h2>我们的医疗专家</h2>
+        <p>经验丰富、温暖细致的医生团队，为宠物健康保驾护航。</p>
+      </div>
 
       <Spin spinning={loading}>
-        <Row gutter={[24, 24]}>
-          {doctors.map((doctor) => (
-            <Col key={doctor._id} xs={24} sm={12} md={8}>
-              <Card className="doctor-card" hoverable>
-                <div className="doctor-avatar">
-                  <img src={doctor.avatar || 'https://via.placeholder.com/150'} alt={doctor.name} />
-                </div>
-                <h2>{doctor.name}</h2>
-                <Tag color="blue">{doctor.specialty}</Tag>
-                <Tag color="green">{doctor.qualification}</Tag>
-                <p className="doctor-intro">{doctor.introduction}</p>
-                <div className="doctor-info">
-                  <p>
-                    <ClockCircleOutlined /> {doctor.experience}年经验
-                  </p>
-                  <p>
-                    <MailOutlined /> {doctor.email}
-                  </p>
-                  <p>
-                    <PhoneOutlined /> {doctor.phone}
-                  </p>
-                </div>
-                <Button type="primary" block size="large" onClick={() => (window.location.pathname = '/appointment')}>
-                  预约挂号
-                </Button>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <div className="doctors-panel page-card">
+          <Row gutter={[24, 24]}>
+            {doctors.map((doctor) => (
+              <Col key={doctor._id} xs={24} sm={12} md={8}>
+                <Card className="doctor-card" hoverable>
+                  <div className="doctor-avatar">
+                    <img src={doctor.avatar || 'https://via.placeholder.com/300x200'} alt={doctor.name} />
+                  </div>
+                  <h2>{doctor.name}</h2>
+                  <Tag color="blue">{doctor.specialty}</Tag>
+                  <Tag color="green">{doctor.qualification}</Tag>
+                  <p className="doctor-intro">{doctor.introduction}</p>
+                  <div className="doctor-info">
+                    <p>
+                      <ClockCircleOutlined className="animated-icon doctor-list-icon" /> {doctor.experience}年经验
+                    </p>
+                    <p>
+                      <MailOutlined className="animated-icon doctor-list-icon" /> {doctor.email}
+                    </p>
+                    <p>
+                      <PhoneOutlined className="animated-icon doctor-list-icon" /> {doctor.phone}
+                    </p>
+                  </div>
+                  <Button type="primary" block size="large" onClick={() => (window.location.pathname = '/appointment')}>
+                    预约挂号
+                  </Button>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </div>
       </Spin>
     </div>
   );

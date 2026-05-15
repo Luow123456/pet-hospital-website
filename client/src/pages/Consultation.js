@@ -63,11 +63,15 @@ function Consultation() {
 
   return (
     <div className="page-container">
-      <h1>在线咨询</h1>
+      <div className="section-heading">
+        <span className="section-tag">在线咨询</span>
+        <h2>立即发送问题，获取专家建议</h2>
+        <p>我们会安排专业医生尽快回复您的咨询。</p>
+      </div>
 
       <Spin spinning={loading}>
         <Space direction="vertical" style={{ width: '100%' }} size="large">
-          <Card title="提交咨询">
+          <Card className="consultation-card" title="提交咨询">
             <Form form={form} onFinish={onFinish} layout="vertical">
               <Form.Item label="咨询标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
                 <Input placeholder="请输入咨询标题" />
@@ -76,15 +80,16 @@ function Consultation() {
                 <Input.TextArea rows={6} placeholder="请详细描述您的问题" />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit" icon={<SendOutlined />}>
+                <Button type="primary" htmlType="submit" icon={<SendOutlined className="animated-icon" />} block>
                   提交咨询
                 </Button>
               </Form.Item>
             </Form>
           </Card>
 
-          <Card title="咨询列表">
+          <Card className="consultation-card" title="咨询记录">
             <List
+              className="consultation-list"
               dataSource={consultations}
               renderItem={(item) => (
                 <List.Item>
