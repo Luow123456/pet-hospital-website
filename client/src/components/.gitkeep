@@ -1,0 +1,6 @@
+import React from 'react';
+
+// This file is reserved for custom components
+// You can create additional React components here
+
+export default {};

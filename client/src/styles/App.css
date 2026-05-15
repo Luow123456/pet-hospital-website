@@ -1,0 +1,88 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin-right: 30px;
+  min-width: 200px;
+}
+
+.app-menu {
+  flex: 1;
+  background: transparent;
+  border: none;
+}
+
+.app-menu :global(.ant-menu-item) {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.app-menu :global(.ant-menu-item:hover) {
+  color: white !important;
+}
+
+.user-section {
+  display: flex;
+  gap: 10px;
+}
+
+.app-content {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.app-footer {
+  background-color: #333;
+  color: white;
+  padding: 40px 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+}
+
+.footer-section h3 {
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.footer-section p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #555;
+  padding-top: 20px;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .app-header {
+    flex-wrap: wrap;
+  }
+
+  .app-menu {
+    order: 3;
+    width: 100%;
+  }
+}
